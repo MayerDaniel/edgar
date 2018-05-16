@@ -192,7 +192,7 @@ end tell' """ % (guid, string)
                 msg = "Locked on target. Commencing launch sequence"
                 self.send_message(msg, guid)
                 cannon = """
-                for ((i=1; i<=1; i++)); do
+                for ((i=1; i<=100; i++)); do
                 osascript -e 'tell application "Messages"
                   set myid to "iMessage;-;+1%s"
                   set ImageAttachment to POSIX file "./ammo.png" as alias
