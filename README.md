@@ -8,19 +8,16 @@ Inspired by hubot, Edgar is a work in progress that aims to be a programmable ch
 Edgar works by linking together various bits of information/functionality on your OSX machine:
 
 - The sqlite DBs that contain all of your imessage data
-- Your contacts from your icloud account
+- ~~Your contacts from your icloud account~~ NO LONGER!!
 - Applescript's ability to communicate with native apps
 
 Edgar is very much a work in progress but can run on your very own iMessage instance!
 - Clone this repo
-- run "python start_edgar.py" (Python2.7)
+- run "python3 start_edgar.py"
 - Sent a text to someone saying "@Edgar are you here?"
 - For a full list of commands, text someone "@Edgar what are you?"
 
-Libraries used and modified:
-
-(This one is a dependency, install through pip)
-https://pypi.python.org/pypi/pyicloud/0.9.1
+Libraries that were used as references:
 
 https://github.com/mattrajca/pymessage-lite
 
@@ -28,7 +25,7 @@ https://github.com/mattrajca/pymessage-lite
 
 - Create Method for implementing new command and regex
   - Create pickled command datastructure for persistent user commands
-- Figure out where group chat handles are stored in the SQLite DB and how to implement sending them with applescript
+- ~~Figure out where group chat handles are stored in the SQLite DB and how to implement sending them with applescript~~ DONE
 - Implement changeable name (but he will always be Edgar in my heart)
 - Catch if multiple people in same chat have edgars, have only one respond to commands.
-- Replicate 'unknown chat' bug that occurs every once in a while...
+- ~~Replicate 'unknown chat' bug that occurs every once in a while...~~ SEEMS TO BE FIXED WITH SWITCH TO PYTHON3
