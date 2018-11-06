@@ -3,6 +3,7 @@ import re
 import os
 import random
 import urllib
+import urllib.request
 from bs4 import BeautifulSoup
 import pickle
 from pprint import pprint
