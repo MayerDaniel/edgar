@@ -1,6 +1,8 @@
 from os.path import expanduser
 import sqlite3
 import datetime
+import typedstream
+import re
 
 OSX_EPOCH = 978307200
 LAST_READ = -1
@@ -25,7 +27,7 @@ class Recipient:
 #  - a `date` property that holds the delivery date of the message
 class Message:
 	def __init__(self, text, date):
-		self.text = text
+		self.text = text.decode()
 		self.date = date
 
 	def __repr__(self):
@@ -75,7 +77,27 @@ def get_last_message():
 	messages = []
 	for row in c:
 		row_id = row[0]
+		
+		#sometime messages are in row 2 and sometimes they are in an NSData object in row 8
 		text = row[2]
+
+		if text is None:
+			data = row[8]
+			print(data)
+			# print type of textstream
+			ts = typedstream.unarchive_from_data(data)
+			# print all functions and properties of the textstream
+			
+			for c in ts.contents:
+				for v in c.values:
+					# check if v has the property 'archived_name'
+					if not (hasattr(v, 'archived_name') and hasattr(v, 'value')):
+						continue
+
+					if v.archived_name == b'NSMutableString':
+						text = v.value
+						break
+
 		if text is None:
 			continue
 
@@ -91,3 +113,5 @@ def get_last_message():
 
 
 	connection.close()
+
+print(get_last_message())

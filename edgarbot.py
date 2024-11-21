@@ -46,13 +46,23 @@ class Edgar():
         faces = ["<I^_^I>", "<Io_oI>", "<I*_*I>", "<IO_OI>", "<I-_-I>", "<I0_0I>", "<Io_0I>", "<IU_UI>", "<I+_+I>", "<I=_=I>"]
         if not noRobot:
             string = random.choice(faces) + " " + string
-        body = """
-osascript -e 'tell application "Messages"
-  set myid to "%s"
-  set mymessage to "%s"
-  set theBuddy to a reference to text chat id myid
-  send mymessage to theBuddy
-end tell' """ % (guid, string)
+        if ";+;chat" not in guid:
+            body = """
+            osascript -e 'tell application "Messages"
+              set targetBuddy to "%s"
+              set targetService to id of 1st account whose service type = iMessage
+              set textMessage to "%s"
+              set theBuddy to participant targetBuddy of account id targetService
+              send textMessage to theBuddy
+            end tell' """ % (guid, string)
+        else:
+            body = """
+            osascript -e 'tell application "Messages"
+              set myid to "%s"
+              set textMessage to "%s"
+              set theBuddy to a reference to chat id myid
+              send textMessage to theBuddy
+            end tell' """ % (guid, string)
         print(body)
         os.system(body)
 
@@ -120,6 +130,15 @@ end tell' """ % (guid, string)
         msg = "%s and %s - %s" % (num1, num2, result)
         self.send_message(msg, guid)
 
+    def roll(self, guid, number):
+        if number < 1:
+            msg = "roll must be with 1 or above"
+            self.send_message(msg, guid)
+
+        num1 = random.randint(1, number)
+        msg = "You rolled a %s" % (num1)
+        self.send_message(msg, guid)
+
     def dog_pic(self, guid):
         url = 'https://imgur.com/r/dogpictures'
         response = urllib.request.urlopen(url)
@@ -140,7 +159,7 @@ end tell' """ % (guid, string)
             pass
         text = message[MESSAGE_CONTENT].text
         date = message[MESSAGE_CONTENT].date
-        command = text.decode().split(" ")
+        command = text.split(" ")
         guid = message[GUID]
         print (command)
         if(command[0] == "@Edgar" or command[0] == "@edgar"):
@@ -189,6 +208,10 @@ end tell' """ % (guid, string)
                 weaponized = regex.group(1)
                 msg = "Tater cat weaponized, sir, and aimed at +1%s" % (weaponized)
                 self.send_message(msg, guid)
+            elif re.match(r"roll \d{1,20}", command, re.IGNORECASE):
+                regex = re.search(r"roll (\d{1,20})", command, re.IGNORECASE)
+                number = int(regex.group(1))
+                self.roll(guid, number)
             elif re.match(r"fire.*?", command, re.IGNORECASE) and weaponized:
                 msg = "Locked on target. Commencing launch sequence"
                 self.send_message(msg, guid)
