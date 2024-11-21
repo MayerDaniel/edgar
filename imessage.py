@@ -83,8 +83,8 @@ def get_last_message():
 
 		if text is None:
 			data = row[8]
-			print(data)
 			# print type of textstream
+			print(data)
 			ts = typedstream.unarchive_from_data(data)
 			# print all functions and properties of the textstream
 			
@@ -94,7 +94,8 @@ def get_last_message():
 					if not (hasattr(v, 'archived_name') and hasattr(v, 'value')):
 						continue
 
-					if v.archived_name == b'NSMutableString':
+					if ( v.archived_name == b'NSMutableString' or v.archived_name == b'NSString') and v.value is not None:
+						print(v.value)
 						text = v.value
 						break
 

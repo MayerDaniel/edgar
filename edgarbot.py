@@ -140,17 +140,8 @@ class Edgar():
         self.send_message(msg, guid)
 
     def dog_pic(self, guid):
-        url = 'https://imgur.com/r/dogpictures'
-        response = urllib.request.urlopen(url)
-        html = response.read()
-        soup = BeautifulSoup(html)
-        dogs = soup.findAll(attrs={'class':'image-list-link'})
-        dog = random.choice(dogs)
-        dog_url = dog.find('img')['src']
-        print(dog_url)
-        dog_url = dog_url.replace("//", "")
-        msg = dog_url.replace("b.", ".")
         self.send_message("Enjoy your dog picture!", guid)
+        msg = "https://preview.redd.it/8c1cagvl5sy51.png?width=496&format=png&auto=webp&s=1005c586ec187aeb6ab961e66f69d1bf0a7e91c9"
         self.send_message(msg, guid, noRobot=True)
 
     def read(self, message):
